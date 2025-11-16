@@ -58,7 +58,8 @@ public class Orchestrator implements Piping {
         }
         // pipeline completed
         CompletableFuture<Data> future = futureMap.get(data.getTransactionID());
-        if (future != null) future.complete(data);
+        if (future != null)
+            future.complete(data);
     }
 
     public Map<String, CompletableFuture<Data>> getFutureMap() {

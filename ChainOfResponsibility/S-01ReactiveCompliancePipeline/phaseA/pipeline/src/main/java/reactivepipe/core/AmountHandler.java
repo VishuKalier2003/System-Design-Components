@@ -21,16 +21,17 @@ import reactivepipe.model.Handler;
 @Getter
 @Setter
 @Component
-public class AuthHandler extends AbstractQueue implements Runnable, Handler {
+public class AmountHandler extends AbstractQueue implements Runnable, Handler {
     private final String handlerID;
     private final Executor executor;
+    private Handler nextNode;
 
     private BiConsumer<String, Data> callback;
 
     @Autowired private Activity activity;
 
-    public AuthHandler(@Qualifier("authExecutor") Executor executor) {
-        this.handlerID = "auth";
+    public AmountHandler(@Qualifier("kycExecutor") Executor executor) {
+        this.handlerID = "amt";
         this.executor = executor;
     }
 
@@ -42,9 +43,8 @@ public class AuthHandler extends AbstractQueue implements Runnable, Handler {
         t.start();      // starting the thread
     }
 
-
     @Override public void updateState(StateData stateData) {
-        activity.insertOrUpdate(stateData.getTransactionID(), QueueStatus.KYC);
+        activity.insertOrUpdate(stateData.getTransactionID(), QueueStatus.PAY);
     }
 
     @Override public void run() {
@@ -77,10 +77,9 @@ public class AuthHandler extends AbstractQueue implements Runnable, Handler {
     @Override public CompletableFuture<Data> performOperation(Data inp) {
         return CompletableFuture.completedFuture(inp).thenApplyAsync(x -> {
             try {
-                System.out.println("auth started..."+System.currentTimeMillis());
-                activity.insertOrUpdate(x.getTransactionID(), QueueStatus.AUTH);
-                Thread.sleep(5000);
-                System.out.println("auth ended..."+System.currentTimeMillis());
+                System.out.println("amt started..."+System.currentTimeMillis());
+                Thread.sleep(10000);
+                System.out.println("amt ended..."+System.currentTimeMillis());
             } catch(InterruptedException e) {
                 Thread.currentThread().interrupt();
             }

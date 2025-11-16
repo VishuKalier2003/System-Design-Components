@@ -53,11 +53,19 @@ public class PayHandler extends AbstractQueue implements Runnable, Handler {
                 performOperation(queue.take()).whenCompleteAsync((x, ex) -> {
                     if(ex != null) {
                         System.out.println(ex.getCause());
+                        return;
                     }
-                    System.out.println("status updated..."+System.currentTimeMillis());
-                    updateState(x.convertToStateData());
-                    System.out.println("callback fired to next handler..."+System.currentTimeMillis());
-                    callback.accept(handlerID, x);
+                    if(isAvailable()) {
+                        System.out.println("status updated..."+System.currentTimeMillis());
+                        updateState(x.convertToStateData());
+                        System.out.println("callback fired to next handler..."+System.currentTimeMillis());
+                        callback.accept(handlerID, x);
+                    } else {
+                        System.out.println("status updated with backpressure...");
+                        activity.insertOrUpdate(x.getTransactionID(), QueueStatus.BACKPRESSURE_FAILURE);
+                        // the handler passed is "stop", which leads to null ultimately ending the chain safely
+                        callback.accept("stop", x);
+                    }
                 }, this.executor);
             } catch(InterruptedException e) {
                 Thread.currentThread().interrupt();

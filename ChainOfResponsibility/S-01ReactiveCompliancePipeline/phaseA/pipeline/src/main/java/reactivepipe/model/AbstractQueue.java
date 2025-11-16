@@ -8,6 +8,10 @@ import reactivepipe.data.StateData;
 public abstract class AbstractQueue {
     protected final LinkedBlockingDeque<Data> queue = new LinkedBlockingDeque<>(5);
 
+    private int capacity() {return 5 - queue.size();}
+
+    protected boolean isAvailable() {return capacity() > 0;}
+
     public void enqueue(Data data) {queue.add(data);}
 
     public abstract void updateState(StateData stateData);
