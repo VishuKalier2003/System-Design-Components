@@ -70,10 +70,10 @@ Distributed-SAGA-Orchestrator/
 
 Below is an abstract progression table for SAGA evolution, from foundational prototype to distributed deployment.
 
-| Phase       | Name                                  | Abstract Objective                                                      | Core Additions                                                                                                 | Complexity              |
-| ----------- | ------------------------------------- | ----------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ----------------------- |
-| **Phase A** | **In-Process Orchestrator**           | Build core Command–State machine with CoR handlers and async execution. | Async `CompletableFuture`, handler chaining, service mapping, compensation, in-memory store.                   | Beginner → Intermediate |
-| **Phase B** | **Operationally Robust Orchestrator** | Add reliability patterns and production scaffolding.                    | Retry policies, backoff, circuit breakers, timeout wheel, manual resolution queue, compensation policy engine. | Intermediate → Advanced |
+| Phase       | Name                                  | Abstract Objective                                                      | Core Additions                                                                                                 | Complexity              |  Folder           |
+| ----------- | ------------------------------------- | ----------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ----------------------- | -------------------- |
+| **Phase A** | **In-Process Orchestrator**           | Build core Command–State machine with CoR handlers and async execution. | Async `CompletableFuture`, handler chaining, service mapping, compensation, in-memory store.                   | Skeleton Architecture | [PhaseA](https://github.com/VishuKalier2003/System-Design-Components/tree/main/ChainOfResponsibility/S-02DistributedSaga/phaseA)
+
 
 ---
 
