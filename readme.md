@@ -18,9 +18,13 @@ incrementally, intentionally, and with clarity of design.
 
 | Design Pattern                    | Description                                                                                             | Example Components                         | Link                                      |
 | --------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------ | ----------------------------------------- |
+<<<<<<< HEAD
 | **Chain of Responsibility (CoR)** | Sequential processing across decoupled handlers; ideal for pipelines, validations, and transformations. | Reactive Compliance Pipeline (Phase A → C) | 👉 [Go to CoR](./ChainOfResponsibility) |
 <!-- | **Observer Pattern**              | Event propagation without tight coupling; essential for reactive systems and domain eventing.           | EventBus Notification Engine               | 👉 [Go to Observer](./observer)           |
 | **Strategy Pattern**              | Dynamically interchangeable algorithms for routing, computation, or behavior selection.                 | Routing Strategy Engine                    | 👉 [Go to Strategy](./strategy)           | -->
+=======
+| **Chain of Responsibility (CoR)** | Sequential processing across decoupled handlers; ideal for pipelines, validations, and transformations. | Reactive Compliance Pipeline (Phase A → C) | 👉 [Go to CoR](https://github.com/VishuKalier2003/System-Design-Components/tree/main/ChainOfResponsibility) |
+>>>>>>> c0d56b6ab4c32187b92129c313a00f95264f8266
 | **Upcoming Patterns**             | Future additions expanding the architectural surface area.                                              | TBD                                        | Coming soon                               |
 
 This table acts as the structural anchor for the entire repository. Each row leads you into a curated design universe.
