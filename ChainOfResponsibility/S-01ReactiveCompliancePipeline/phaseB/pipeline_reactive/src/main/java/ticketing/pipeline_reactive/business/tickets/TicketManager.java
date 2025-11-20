@@ -38,17 +38,17 @@ public class TicketManager {
     private boolean hasPremiumTicket() {return !premiumQueue.isEmpty();}
 
     @Scheduled(fixedRate=1000)
-    public void pushBasicIntoTenant() {
+    public void pushBasicIntoTenant() {     // scheduled function
         if(!insertIntoBasic()) {
             if(!basic.get()) {
                 log.warn("BASIC Ticket MAX CAP reached");
                 basic.set(true);
             }
-        } else {basic.set(false);}
+        } else {basic.set(false);}  
     }
 
     @Scheduled(fixedRate=500)
-    public void pushPremiumIntoTenant() {
+    public void pushPremiumIntoTenant() {   // scheduled function
         if(!insertIntoPremium()) {
             if(!premium.get()) {
                 log.warn("PREMIUM Ticket MAX CAP reached");

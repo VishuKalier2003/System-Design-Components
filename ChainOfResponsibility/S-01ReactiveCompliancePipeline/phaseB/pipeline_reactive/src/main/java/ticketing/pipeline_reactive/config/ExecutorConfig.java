@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ExecutorConfig {
+    // A fixed pool of threads assigned to each handler
 
     @Bean("authExecutor")
     public ExecutorService createAuthExecutor() {return Executors.newFixedThreadPool(4);}

@@ -54,7 +54,7 @@ public class AuthHandler extends AbstractQueue implements Handler, Runnable {
     @Override public boolean backpressure() {
         if(!paused) {
             paused = true;
-            log.warn("BACKPRESSURE → handler {} paused, waiting for healing...", ID);
+            log.warn("BACKPRESSURE -> handler {} paused, waiting for healing...", ID);
         }
         return false;
     }

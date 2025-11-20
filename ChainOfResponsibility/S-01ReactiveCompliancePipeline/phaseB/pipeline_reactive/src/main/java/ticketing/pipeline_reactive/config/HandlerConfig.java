@@ -10,6 +10,7 @@ import ticketing.pipeline_reactive.model.Handler;
 
 @Configuration
 public class HandlerConfig {
+    // The bean names are same as their handlerID
 
     @Bean("auth")
     public Handler createAuthHandler() {return new AuthHandler();}

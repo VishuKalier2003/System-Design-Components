@@ -28,6 +28,7 @@ public class TenantManager implements Runnable {
 
     private final Logger log = LoggerFactory.getLogger(TenantManager.class);
 
+    // PostConstruct to initialize and start the thread along with the chain od responsibility
     @PostConstruct
     public void init() {
         Thread thread = new Thread(this, "ticket-and-tenant");
@@ -37,7 +38,9 @@ public class TenantManager implements Runnable {
     }
 
     public void attachTicket(Data data) {
+        // supplier at start to supply data to the future chain
         CompletableFuture.supplyAsync(() -> data).thenApplyAsync(x -> {
+            // feeding ticket to tenant (request) if the ticket available
             if(x.getAccountType() == AccountType.BASIC) {
                 String basic = ticketManager.getBasicTicket();
                 if(basic != null)
@@ -51,7 +54,7 @@ public class TenantManager implements Runnable {
                 else
                     throw new NoTicketException(AccountType.PREMIUM.name());
             }
-            tenantQueue.insert(x);
+            tenantQueue.insert(x);      // Inserting into the queue
             log.info("The Data with transaction ID {} and {} ticket {} is dispatched to working queue",x.getTransactionID(),x.getAccountType().name(),x.getTicket());
             return x;
         }, ticketExecutor).whenComplete((x, ex) -> {
@@ -62,7 +65,7 @@ public class TenantManager implements Runnable {
                 } else {
                     log.error("Unexpected error !!");
                 }
-                return; // DO NOT dereference x
+                return;
             }
             // success case
             log.debug("Ticket assigned for {}", x.getTransactionID());
@@ -70,8 +73,9 @@ public class TenantManager implements Runnable {
     }
 
     @Override public void run() {
+        // The "ticket-and-tenant" thread is used for this runnable function, that inserts into the chain
         while(true) {
-            Data data = tenantQueue.extract();
+            Data data = tenantQueue.extract();      // INFO: blocking extract function
             Handler head = auth;
             head.insert(data);
         }
