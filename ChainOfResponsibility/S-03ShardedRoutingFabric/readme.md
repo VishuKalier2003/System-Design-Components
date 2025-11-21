@@ -184,7 +184,7 @@ Below is a table linking each phase folder—each representing a progressively a
 
 | Phase       | Folder Link | Description                       | Key Additions                                                                         |
 | ----------- | ----------- | --------------------------------- | ------------------------------------------------------------------------------------- |
-| **Phase A** | `/phaseA`   | Base deterministic routing fabric | Percentile routing, sharded CoR pipelines, shard manager                              |
+| **Phase A** | [PhaseA](https://github.com/VishuKalier2003/System-Design-Components/tree/main/ChainOfResponsibility/S-03ShardedRoutingFabric/phaseA)  | Base deterministic routing fabric | Percentile routing, sharded CoR pipelines, shard manager                              |
 
 ---
 
