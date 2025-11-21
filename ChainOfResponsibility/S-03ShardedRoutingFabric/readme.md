@@ -1,122 +1,108 @@
+# **Sharded Routing Fabric**
 
-# **Sharded Routing Fabric — Deterministic, Scalable Request Routing**
-
-A modular, extensible **Sharded Routing Fabric** designed to demonstrate deterministic, hash-based request placement across multiple shard-local processing pipelines. Each shard operates an independent **Chain of Responsibility** pipeline (Auth → Charges → Pay), backed by asynchronous execution, bounded queues, and metric aggregation.
-
-This repository provides a clean, generalizable skeleton suitable for:
-
-* distributed systems learning
-* scalable request routing
-* multi-tenant isolation patterns
-* sharded processing pipelines
-* operational experimentation (heat visualization, dynamic routing, metrics)
+A modular, extensible, and production-inspired **Sharded Routing Fabric** designed to demonstrate deterministic routing, shard-local execution pipelines, and scalable distributed processing patterns.
+This repository contains the **base skeleton** (the common core) along with phase-wise incremental implementations that progressively introduce advanced features like hot-key mitigation, spillover routing, coordinated shard migration, Kafka-backed event pipelines, and distributed shard managers.
 
 ---
 
-## **✨ Key Features**
+# **📌 What Is a Sharded Routing Fabric?**
 
-### **Deterministic Percentile-Based Routing**
+A **Sharded Routing Fabric** is a routing architecture where incoming tasks or requests are deterministically placed onto one of many **shards** (independent processing units). Each shard owns:
 
-Each task is routed to a shard using:
+* A percentile range
+* Its own handler pipeline (Chain-Of-Responsibility)
+* Metrics and routing counters
+* Independent concurrency via local queues/executors
 
-1. SHA-256 hash of transaction ID
-2. Normalized percentile value (0 → 1)
-3. Range-based shard selection
+This enables:
 
-This ensures:
-
-* stable, predictable placement
-* even distribution
-* easy shard expansion / rebalancing
+* Predictable routing
+* Reduced contention
+* Horizontal scalability
+* Per-shard specialization
+* Operational isolation
 
 ---
 
-### **Shard-Local Handler Pipelines (Chain of Responsibility)**
+# **🧠 Core Idea of This Repository**
 
-Each shard runs a fully independent processing chain:
+This repository provides a skeleton implementation demonstrating:
+
+### **1. Deterministic Percentile-Based Routing**
+
+Every request is hashed → normalized [0,1] → routed into a deterministic percentile bucket.
+
+### **2. Shard-Local Handler Chains**
+
+Each shard runs:
 
 ```
-AuthHandler → ChargesHandler → PayHandler
+Auth → Charges → Pay
 ```
 
-Every handler:
+Using async execution + non-blocking queues.
 
-* has a dedicated bounded queue
-* runs in its own processing thread
-* executes asynchronously
-* pushes data to the next handler
-* produces load/time metrics
+### **3. Threaded Shard Manager**
 
----
+A dedicated manager thread continuously:
 
-### **Asynchronous Shard Manager**
+1. Polls inbound tasks
+2. Selects correct shard
+3. Pushes tasks to that shard’s pipeline
 
-The **ShardManager** is the orchestrator:
+### **4. Extensible Shard Definitions**
 
-* consumes incoming tasks
-* computes hash → shard mapping
-* dispatches work to shard chains
-* supports dynamic routing adjustments
+Shard boundaries can be:
 
----
+* Adjusted
+* Reconfigured
+* Extended to new shards
 
-### **Metrics Aggregation**
+### **5. Clear Separation of Concerns**
 
-Metrics collected:
-
-* **LOAD** (processed amounts)
-* **TIME** (handler-level processing time)
-* **HASH** (distribution visualization)
-
-This allows you to track:
-
-* per-shard load
-* shard activity
-* hash distribution fairness
+* **API Layer** → ingestion + admin ops
+* **Routing Layer** → hashing + mapping
+* **Shard Layer** → independent pipeline
+* **Metrics Layer** → aggregation + monitoring
 
 ---
 
-### **Dynamic Routing Controls**
+# **📂 Repository Structure**
 
-Admin APIs allow:
-
-* rebalancing shard boundaries
-* forcing manual reroutes for specific tasks
-* introspecting shard metrics
-
----
-
-## **📁 Folder Structure**
-
-```
-fabric/
- ├─ sharding/
- │   ├─ api/                     # REST controllers (Data submission + Admin)
- │   ├─ config/                  # Spring configs (chains, routing, shards)
- │   ├─ core/                    # Shard + Handler implementations
- │   ├─ data/                    # Data models, metrics, counters
- │   ├─ model/                   # Handler abstraction + queue base class
- │   ├─ router/                  # Percentile-based routing logic
- │   ├─ service/                 # Shard manager + metrics aggregator
- │   ├─ utils/                   # SHA-256 hashing utilities
- │   └─ ShardingApplication.java # Application entry point
+```text
+sharded-routing-fabric/
+│
+├── skeleton/                     # Base implementation (Phase A foundation)
+│   ├── api/                      # Inbound API controllers
+│   ├── config/                   # Shard/Chain/Router configuration
+│   ├── core/                     # Shard + Handler pipeline implementations
+│   ├── data/                     # DTOs, metrics, route counters
+│   ├── model/                    # Abstract queue + handler interface
+│   ├── router/                   # Deterministic hash-based routing engine
+│   ├── service/                  # ShardManager + MetricsAggregator
+│   ├── utils/                    # Hashers and additional helpers
+│   └── ShardingApplication.java  # Spring Boot Entry
+│
+├── phaseA/                       # Phase 1: Deterministic Routing + Shard Chains
+├── phaseB/                       # Phase 2: Hot-key mitigation + Spillover + Joins
+├── phaseC/                       # Phase 3: Distributed Routing, Kafka, Migrations
+└── README.md
 ```
 
 ---
 
-## **🧩 High-Level Architecture**
+# **📜 Sharded Routing Fabric — Conceptual Diagram**
 
 ```mermaid
 flowchart LR
     A[Client Request] --> B[DataController]
     B --> C[ShardManager Queue]
-    C --> D[ShardManager Router]
-    D -->|Percentile Match| E{Shard Selection}
-
-    E -->|shard1| S1[Shard 1 Chain]
-    E -->|shard2| S2[Shard 2 Chain]
-    E -->|shard3| S3[Shard 3 Chain]
-    E -->|shard4| S4[Shard 4 Chain]
+    C --> D[Router]
+    D -->|Normalized Hash| E{Shard Range Match}
+    E --> S1[Shard 1 Pipeline]
+    E --> S2[Shard 2 Pipeline]
+    E --> S3[Shard 3 Pipeline]
+    E --> S4[Shard 4 Pipeline]
 
     S1 --> M[Metrics Aggregator]
     S2 --> M
@@ -126,163 +112,208 @@ flowchart LR
 
 ---
 
-## **🛠 Control Flow (End-to-End)**
+# **🔧 Key Architectural Features**
+
+## **Deterministic Routing**
+
+Implemented via SHA-256 hashing:
+
+```java
+normalized = hashToLong(id) / Long.MAX_VALUE;
+```
+
+Mapped to shard ranges:
+
+| Shard  | Range       |
+| ------ | ----------- |
+| shard1 | 0.00 → 0.25 |
+| shard2 | 0.25 → 0.50 |
+| shard3 | 0.50 → 0.75 |
+| shard4 | 0.75 → 1.00 |
+
+This ensures stable, predictable distribution without shared state.
+
+---
+
+## **Shard Manager**
+
+A continuously running thread:
+
+* polls task queue
+* computes shard
+* forwards data to shard pipeline
+
+This pattern:
+
+* avoids API blocking
+* allows batching via queue backpressure
+* decouples routing from core app threads
+
+---
+
+## **Sharded Handler Chains**
+
+Each shard’s execution flow:
+
+```mermaid
+flowchart LR
+    A[Auth Handler] --> B[Charges Handler] --> C[Pay Handler] --> D[Metrics]
+```
+
+Every handler:
+
+* owns its own queue
+* runs in its own thread
+* executes async internal logic
+
+---
+
+## **Manual Rerouting**
+
+Admin can override routing for specific transactions:
+
+* Useful for debugging
+* Useful for controlled failover
+* Useful for shard warm-up
+
+---
+
+# **📘 Phase-wise Implementations**
+
+Below is a table linking each phase folder—each representing a progressively advanced version of the Sharded Routing Fabric.
+
+| Phase       | Folder Link | Description                       | Key Additions                                                                         |
+| ----------- | ----------- | --------------------------------- | ------------------------------------------------------------------------------------- |
+| **Phase A** | `/phaseA`   | Base deterministic routing fabric | Percentile routing, sharded CoR pipelines, shard manager                              |
+
+---
+
+# **📘 Detailed Breakdown of the Skeleton (Common Base)**
+
+## **1. API Layer**
+
+### `DataController`
+
+* Accepts single/multiple tasks
+* Converts into `Data` objects
+* Enqueues into `ShardManager`
+
+### `ShardController`
+
+* Allows percentile updates
+* Allows manual rerouting
+* Exposes shard metrics
+
+---
+
+## **2. Routing Layer**
+
+### `Router`
+
+Responsible for:
+
+* SHA-256 hashing
+* Normalization
+* Selecting correct shard via percentile boundaries
+* Supporting custom reroute overrides (deferenced routing)
+
+---
+
+## **3. Shard Layer**
+
+### `Shard`
+
+Bundles:
+
+* Percentile boundaries
+* Handler chain head
+* Local metrics and distribution counters
+
+---
+
+## **4. Handler Layer**
+
+Each handler inherits from `AbstractQueue`, providing:
+
+* queue
+* active element counter
+* controlled throughput
+
+Handlers:
+
+* `AuthHandler`
+* `ChargesHandler`
+* `PayHandler`
+
+Each implements:
+
+* async evaluate logic
+* metrics emission
+* next pointer to form the chain
+
+---
+
+## **5. Metrics Layer**
+
+### MetricsAggregator
+
+Consumes metrics published by handlers via injected `BiConsumer`.
+
+Each metric includes:
+
+* load
+* time
+* hash distribution
+
+---
+
+# **📊 Control Flow (Detailed)**
 
 ```mermaid
 sequenceDiagram
-    participant Client
+    participant C as Client
     participant API as DataController
     participant Q as TenantQueue
     participant SM as ShardManager
-    participant Router
-    participant Shard
-    participant Auth
-    participant Charges
-    participant Pay
-    participant Metrics
+    participant R as Router
+    participant S as Shard
+    participant H1 as Auth
+    participant H2 as Charges
+    participant H3 as Pay
 
-    Client->>API: POST /task
-    API->>Q: Enqueue Data
-    SM->>Q: Dequeue Data
-    SM->>Router: Compute Hash + Percentile
-    Router->>Shard: Select Shard
-    SM->>Shard: Dispatch to Handler Queue
-    Shard->>Auth: pushIntoQueue()
-    Auth->>Charges: next()
-    Charges->>Pay: next()
-    Pay->>Metrics: Emit Metrics
+    C->>API: POST /task
+    API->>Q: enqueue(Data)
+    SM->>Q: take()
+    SM->>R: getRespectiveShard()
+    R->>SM: return Shard
+    SM->>S: pushIntoEvaluation()
+    S->>H1: pushIntoQueue()
+    H1->>H2: next()
+    H2->>H3: next()
+    H3->>SM: Metrics published
 ```
 
 ---
 
-## **🧠 Core Techniques Used**
+# **🎯 Goal of This Repository**
 
-### **1. Deterministic Routing**
+This implementation is designed as a **learning and demonstration framework** for:
 
-Mapping request → shard using:
-
-* SHA-256 hashing
-* percentile normalization
-* configurable shard boundaries
-
-Ensures **consistent placement** and **fair distribution**.
-
----
-
-### **2. Chain of Responsibility**
-
-Every shard uses a micro-pipeline:
-
-* handlers are linked dynamically
-* each handler owns its queue & executor
-* each processing step is isolated
+* Scalable sharded architectures
+* Deterministic routing strategies
+* Chain of Responsibility pipeline engineering
+* Load isolation through shard segmentation
+* Practical observability design
+* Reroute + rebalance fundamentals
+* Foundation to build advanced phases: distributed shards, Kafka routing, etc.
 
 ---
 
-### **3. Asynchronous Orchestration**
+# **🏁 Summary**
 
-ShardManager runs continuously:
+This repository presents a **complete, extensible, and production-inspired skeleton** for a Sharded Routing Fabric system. The deterministic routing model, parallel shard-local pipelines, and clear separation of responsibilities make this design ideal for:
 
-* pulls tasks from global queue
-* computes routing
-* pushes to shard-local queues
-
----
-
-### **4. Observability**
-
-Each handler publishes:
-
-* load metrics
-* time metrics
-* hash distribution metrics
-
-Stored in:
-
-```
-Shard.metrics
-Shard.router.routes
-```
-
----
-
-## **⚙️ Running the Application**
-
-Requires:
-
-* Java 17+
-* Maven
-* Spring Boot
-
-Start with:
-
-```bash
-mvn spring-boot:run
-```
-
-API Endpoints:
-
-| Endpoint                        | Method | Description              |
-| ------------------------------- | ------ | ------------------------ |
-| `/shard-fabric/task`            | POST   | Submit a single task     |
-| `/shard-fabric/multiple-task`   | POST   | Submit a batch of tasks  |
-| `/shard/route/lower`            | POST   | Update shard lower bound |
-| `/shard/route/higher`           | POST   | Update shard upper bound |
-| `/shard/reroute/{task}/{shard}` | PUT    | Force manual reroute     |
-| `/shard/get/{shardID}`          | GET    | View shard metrics       |
-| `/shard/getAll`                 | GET    | List all shards          |
-
----
-
-## **📊 Shard Introspection**
-
-Each shard displays:
-
-* boundaries
-* load
-* activity (processing time accumulation)
-* hash distribution heatmap
-
-Example:
-
-```
-{
-  "lowerBoundary": 0.25,
-  "upperBoundary": 0.50,
-  "load": 13455.0,
-  "activeTime": 11890,
-  "channels": {
-     0.3124: 5,
-     0.3388: 7
-  }
-}
-```
-
----
-
-## **📦 Extending This Project**
-
-This skeleton is intentionally **extensible**, allowing future enhancements:
-
-### Possible extensions:
-
-* Weighted Rendezvous Hashing
-* Hot-key spillover workers
-* Shard migration coordinator
-* Consistent hashing ring
-* Kafka-backed distributed routing
-* Per-tenant quotas
-* Dynamic autoscaling
-
----
-
-# **📘 Summary**
-
-This repository offers a **clean, production-minded template** for building scalable, deterministic routing systems with shard-local pipelines. The design balances simplicity with correctness and lays groundwork for advanced patterns like sharded microservices, distributed routing fabrics, and multi-tenant fairness algorithms.
-
-It is ideal for:
-
-* system design practice
-* learning sharding architectures
-* studying pipeline concurrency models
-* building distributed primitives
+* High-performance multi-tenant platforms
+* Stateful workloads needing affinity
+* Distributed request processing
+* Systems that require horizontal scalability models
