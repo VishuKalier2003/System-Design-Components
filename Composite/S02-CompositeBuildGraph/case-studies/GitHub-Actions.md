@@ -1,30 +1,5 @@
 # GitHub Actions as a Composite Build System
 
-_A production-grade architectural case study_
-
----
-
-## Table of Contents
-
-1. [What is GitHub Actions?](https://chatgpt.com/c/69248c4a-5418-8323-9f5e-e22b9526f426#1-what-is-github-actions)
-
-2. [How and why it uses Composite Build System concepts](https://chatgpt.com/c/69248c4a-5418-8323-9f5e-e22b9526f426#2-how-and-why-it-uses-composite-build-system-and-to-what-extent)
-
-3. [Enterprise-grade behavior and architecture](https://chatgpt.com/c/69248c4a-5418-8323-9f5e-e22b9526f426#3-how-they-ensure-that-github-actions-behave-as-an-enterprise-level-architecture)
-
-4. [Detailed architecture and component flows](https://chatgpt.com/c/69248c4a-5418-8323-9f5e-e22b9526f426#4-detailed-architecture-diagrams-and-component-flows)
-
-5. [Powerful and unique features aligned with Composite Build System](https://chatgpt.com/c/69248c4a-5418-8323-9f5e-e22b9526f426#5-powerful-and-unique-features-aligned-with-composite-build-system)
-
-6. [Implementation idea, lifecycle, lifecycle management](https://chatgpt.com/c/69248c4a-5418-8323-9f5e-e22b9526f426#6-complete-implementation-idea-and-lifecycle-management)
-
-7. [Alignment with SD, LLD, OOP, and HLD principles](https://chatgpt.com/c/69248c4a-5418-8323-9f5e-e22b9526f426#7-alignment-with-sd-lld-oop-and-hld-principles)
-
-8. [Scalability, maintainability, operability at GitHub scale](https://chatgpt.com/c/69248c4a-5418-8323-9f5e-e22b9526f426#8-scalability-maintainability-and-operability)
-
-
----
-
 ## 1. What is GitHub Actions?
 
 GitHub Actions is GitHub’s native automation and CI/CD platform. It allows you to define **workflows** as YAML files under `.github/workflows` in a repository. A workflow is a configurable automated process made up of one or more **jobs**; each job consists of a series of **steps**. Jobs run in isolated **runners**—either GitHub-hosted VMs/containers or self-hosted machines—and can execute scripts or invoke reusable **actions**, which are packaged automation units.([GitHub Docs](https://docs.github.com/actions/using-workflows/workflow-syntax-for-github-actions?utm_source=chatgpt.com "Workflow syntax for GitHub Actions"))
