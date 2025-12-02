@@ -22,7 +22,6 @@ flowchart TD
     F --> G[Build / Test / Deploy / Automation]
 ```
 
-**Diagram explanation (≈170 words)**
 This diagram depicts the conceptual flow of GitHub Actions as an automation engine. The process starts with a **GitHub Repository**, which is the central artifact container. The **Events** node represents triggers like `push`, `pull_request`, `workflow_dispatch`, and `schedule`. These events are the primary entrypoints that initiate automation runs. Each event maps to one or more **Workflow YAML** definitions stored under `.github/workflows/`. The workflow describes a set of **Jobs**, each running in its own isolated runner environment. Within each job, a series of **Steps** is executed sequentially. Steps can either invoke reusable **Actions** from the GitHub Marketplace or execute custom shell commands and scripts. The final node, **Build / Test / Deploy / Automation**, represents all possible outcomes: CI pipelines, deployment workflows, maintenance tasks, and integrations with external tools. This structure highlights how GitHub Actions transforms raw Git repository events into complex, orchestrated automation flows using a compositional model.
 
 ### 1.2 Structural Composition Diagram
@@ -58,7 +57,6 @@ classDiagram
     Step "0..1" --> "1" Action
 ```
 
-**Diagram explanation (≈170 words)**
 This class-style diagram shows the logical composition of core GitHub Actions entities. A **Workflow** represents a top-level YAML definition; it has attributes like `name`, `on` (the trigger configuration), and a collection of `jobs`. Each **Job** is a unit of execution that specifies `runs-on` (the environment), `needs` (dependencies on other jobs), and a sequence of `steps`. The **Step** entity encapsulates either a reusable action (`uses`) or an inline command (`run`), plus optional environment variables. The **Action** represents a reusable component defined by an `action.yml`, with well-defined `inputs`, `outputs`, and runtime configuration (`runs` determining whether it is a composite, JavaScript, or Docker action). The relationships illustrate a clear Composite pattern: workflows are composites of jobs; jobs are composites of steps; steps may reference actions, which themselves can be composites of further steps (in case of composite actions). This structural view makes explicit the hierarchical design that underpins GitHub Actions’ flexibility and reusability.
 
 ---
@@ -119,7 +117,6 @@ flowchart TD
     B2 --> D2[Steps & Actions]
 ```
 
-**Diagram explanation (≈170 words)**
 This diagram maps a generic Composite Build System model to GitHub Actions primitives. On the left, the conceptual **Composite Build System** uses **Targets**, which have **Target Dependencies** and **Target Actions**. This is typical for build tools like Bazel or Gradle. On the right, **GitHub Actions** uses **Jobs** as the equivalent of targets. Job dependencies are expressed through `needs`, forming a job DAG akin to a build dependency graph. Job actions are decomposed into **Steps & Actions**, which execute the actual logic. This alignment demonstrates that GitHub Actions effectively behaves as a composite build engine: it allows you to define jobs as high-level targets, declare their dependencies, and attach execution logic via steps. The DAG semantics ensure that dependencies run before dependents and that jobs can run in parallel where dependencies permit. This mapping clarifies why GitHub Actions is naturally suitable as a generalized Composite Build System for CI/CD and automation workloads.
 
 ### 2.4 Composite Actions Diagram
@@ -132,7 +129,6 @@ flowchart TD
     D --> E[Reusable Sub-Pipeline]
 ```
 
-**Diagram explanation (≈170 words)**
 This diagram focuses on **Composite Actions**, a key feature that intensifies the composite nature of GitHub Actions. A **Composite Action Definition** is declared via `action.yml` with `runs: using: "composite"`. This indicates that the action itself is implemented as a set of **Steps**, just like a job. These steps can use other actions (`uses: ...`) or execute commands (`run: ...`), enabling nested composition. When such an action is referenced in a workflow step, the entire internal step structure is conceptually inlined into the workflow, but abstracted away from the user. The **Reusable Sub-Pipeline** node captures the idea that a composite action is essentially a reusable mini-workflow that encapsulates a standardized build or deployment sub-process. This allows organizations to centralize best practices—such as security checks, testing templates, or deployment patterns—into single composite actions reused across repositories, promoting consistency and reducing duplication.
 
 ---
@@ -201,7 +197,6 @@ flowchart LR
     Q --> R2
 ```
 
-**Diagram explanation (≈180 words)**
 This diagram presents a conceptual enterprise-level execution architecture for GitHub Actions. Within the **GitHub Cloud**, the **Events Service** receives triggers such as pushes, pull requests, and manual workflow dispatches. These events are fed to the **Workflow Orchestrator**, which resolves the relevant workflows, parses their definitions, and builds the job dependency graph. The orchestrator then places runnable jobs into the **Job Queue / Scheduler**, which is responsible for assigning jobs to appropriate execution environments. On the right, the **Runners** section shows two categories: **Hosted Runner Pool** (GitHub-managed VMs/containers) and **Self-Hosted Runner** instances (customer-managed agents). Jobs are dispatched from the scheduler to available runners that match the `runs-on` requirements (e.g., `ubuntu-latest`, `windows-latest`, or custom labels). This decoupling between orchestration and execution is fundamental to enterprise scalability: GitHub can independently scale event ingestion, workflow orchestration, and job execution pools while ensuring multi-tenant isolation and reliable throughput.
 
 ### 3.2 Security & Governance Overlay Diagram
@@ -216,7 +211,7 @@ flowchart TD
     E --> F[Job Execution with Restricted Permissions]
 ```
 
-**Diagram explanation (≈170 words)**
+
 This diagram illustrates the security and governance overlay on top of the GitHub Actions orchestration. The **Org / Repo Settings** node signifies administrative controls configured by organization or repository owners. These drive **Actions Policies**, which can define which actions are allowed (e.g., only those from the same organization or from a curated list) and what security posture is applied. From these policies, we derive **Allowed Actions / Repos** and **Required Reviews / Environments**. Allowed actions define which external components are permissible, while required reviews govern environment protections, e.g., requiring approvals before deploying to production. These policies flow into the **Workflow Orchestrator**, influencing whether a workflow or job is allowed to proceed. Finally, orchestration yields **Job Execution with Restricted Permissions**, ensuring that each runner operates with only the minimally required scopes and secrets. This architecture ensures GitHub Actions can be used in highly regulated environments while still leveraging the convenience and power of a composite automation system.
 
 ---
@@ -251,7 +246,7 @@ flowchart LR
     B4 --> A5
 ```
 
-**Diagram explanation (≈180 words)**
+
 This diagram separates GitHub Actions into a **Control Plane** and a **Data Plane**, similar to modern distributed systems. In the Control Plane, the **Event Listener** receives GitHub events. The **Workflow Resolver** identifies the applicable workflows for the event and fetches their YAML definitions. The **Graph Builder (Jobs/Needs)** parses `jobs` and `needs` sections to build a job DAG, capturing dependencies, environments, and required secrets. The **Scheduler / Queue** then decides which jobs are ready to run (no unmet dependencies) and enqueues them. In the Data Plane, a **Runner VM/Container** picks up a job, pulls the repository, and executes the job using the **Action Execution Engine**, which runs steps and actions sequentially. A **Log Collector** streams logs back to GitHub in real time, while an **Artifact Uploader** handles build artifacts. These outputs feed into the **Result Aggregator**, which compiles logs, artifacts, and statuses into a coherent workflow run result. This architecture supports robust parallelism, modular execution, and clear separation of concerns.
 
 ### 4.2 Workflow YAML to Execution Graph Transformation
@@ -272,7 +267,6 @@ sequenceDiagram
     Orchestrator->>Orchestrator: Determine runnable jobs
 ```
 
-**Diagram explanation (≈160 words)**
 This sequence diagram shows the transformation of workflow definitions into an executable graph. The **User/Dev** commits and pushes changes to the **GitHub Repo**, which triggers an event (such as `push`). The repository signals the **Workflow Orchestrator** that an event occurred. The orchestrator queries the repository for workflow definitions under `.github/workflows/` and forwards them to the **Job Graph Builder**. The graph builder parses the YAML definitions, interpreting `jobs`, `steps`, and `needs` fields to create an internal DAG representing job dependencies and execution order. This DAG is returned to the orchestrator as an **Execution Plan**. The orchestrator then determines which jobs are immediately runnable (those without unmet dependencies) and pushes them into the scheduling subsystem. This transformation is essentially the same conceptual step as building a target DAG in a composite build system, confirming that GitHub Actions’ orchestration layer is strongly aligned with build-system design principles.
 
 ### 4.3 Job Execution Internals
@@ -290,7 +284,6 @@ flowchart TD
     H --> I
 ```
 
-**Diagram explanation (≈190 words)**
 This diagram delves into the internal execution model of a job on a single runner. Once a job is **Assigned to Runner**, the first step is usually the **Checkout Repository**, fetching the relevant commit to the runner’s workspace. The next phase is **Initialize Environment**, which may include installing tools, setting up language runtimes, honoring matrix expansions (e.g., different OS, Node versions), and configuring environment variables and secrets. Then the engine **Executes Steps Sequentially**. Each step may be a `uses` step (referencing an action) or a `run` step (executing inline shell scripts). For `uses` steps, the **Action Runtime** depends on the action type—Docker container-based, JavaScript-based, or composite. For `run` steps, the **Shell / Runtime Execution** node handles direct command execution. Both action execution and script execution stream **Logs + Status** back to the GitHub control plane. If any step fails (depending on `continue-on-error` settings), the job may fail, and dependent jobs in the DAG may not be scheduled. This tightly orchestrated model allows fine-grained monitoring and debugging of job behavior.
 
 ### 4.4 Artifact and Logs Aggregation
@@ -305,7 +298,6 @@ flowchart LR
     E --> F
 ```
 
-**Diagram explanation (≈170 words)**
 This diagram tackles the observability pipeline of GitHub Actions. As the **Runner Job** executes steps, it produces two main categories of output: **Log Stream** and **Artifact Files**. The log stream is continuously forwarded to the **Log Storage / Viewer**, where it becomes visible in the GitHub UI for each step and job. Artifact files—such as build outputs, test reports, and coverage files—are uploaded to **Artifact Storage**, which might be backed by an object storage layer. Both types of outputs are aggregated into a **Workflow Run Summary**, which unifies job statuses, logs, and artifacts under a single run ID. This summary is exposed to users via the Actions UI and APIs. From an enterprise viewpoint, this architecture supports auditability, troubleshooting, and historical analysis, while ensuring that CI/CD runs are fully traceable and reproducible, crucial for compliance and high-stakes deployment environments.
 
 ---
@@ -354,7 +346,6 @@ flowchart TD
     E --> E2[Marketplace Actions]
 ```
 
-**Diagram explanation (≈170 words)**
 This diagram links generic composite build concepts to specific GitHub Actions features. **Reusable Units** map to **Composite Actions**, where complex sequences are bundled into a reusable component. **Parametric Targets** correspond to **Matrix Builds**, which automatically expand a job definition across multiple configurations. **Target Environments** align with **Environments + Approvals**, supporting environment-specific policies and controls. Finally, a **Plugin Ecosystem** translates into **Marketplace Actions**, where the community and vendors publish reusable automation pieces. This mapping underscores that GitHub Actions is not just a simple CI runner; it is a fully-featured composite automation engine with modularity, reuse, and extension as first-class citizens. The diagram reinforces that the design choices in GitHub Actions systematically reflect core composite build system philosophies.
 
 ### 5.6 Compositional Hierarchy Diagram
@@ -369,7 +360,6 @@ graph TD
     S2 --> A2[Composite Action B sub-steps]
 ```
 
-**Diagram explanation (≈170 words)**
 This diagram shows the nested compositional hierarchy GitHub Actions can achieve. A **Workflow** defines multiple **Jobs**, such as Job 1 and Job 2. Within Job 1, a **Step** uses **Composite Action A**, and Job 2 uses **Composite Action B**. Each composite action further expands into sub-steps (e.g., performing setup, build, test, and report operations). From a composite build perspective, this is equivalent to defining high-level targets which then invoke reusable sub-targets that encapsulate complex behavior. This hierarchical nesting allows enterprises to standardize and centralize automation logic across many repositories and teams, while still retaining the flexibility for individual workflows to arrange and combine these actions as needed.
 
 ---
@@ -411,7 +401,6 @@ flowchart TD
     H --> I[Expose Results & Notifications]
 ```
 
-**Diagram explanation (≈180 words)**
 This diagram describes the primary lifecycle of a GitHub Actions workflow. It begins with **Define Workflow YAML**, where configuration is committed into the repository. An **Event Trigger** (like `push`, `pull_request`, or `workflow_dispatch`) then initiates workflow resolution. The **Workflow Matching** stage identifies which workflows are applicable based on the event configuration. Then **Job DAG Construction** parses the YAML and builds the job graph. **Schedule Jobs** determines which jobs can be run immediately, taking dependencies into account. These jobs are then **Run on Runners**, where all step actions and scripts are executed. Throughout execution, the system **Collects Logs & Artifacts**, storing them for inspection. Finally, it **Computes Final Status** (success, failure, canceled) and **Exposes Results & Notifications** via the GitHub UI, checks, status APIs, and optional integrations (Slack, email, etc.). This lifecycle is directly comparable to how a composite build system plans and executes targets against a DAG of dependencies.
 
 ### 6.3 Lifecycle Management Components Diagram
@@ -432,7 +421,6 @@ flowchart LR
     D --> E
 ```
 
-**Diagram explanation (≈160 words)**
 This diagram outlines core lifecycle management concerns around GitHub Actions. **Version Control** of workflow YAML ensures that any change to automation is tracked with full history and can be reviewed like code. **Policy & Governance** applies constraints and approvals (e.g., restricting actions sources, requiring reviews for environment deployments). **Runner Fleet Management** controls hosted or self-hosted runner pools: scaling, maintenance, and label-based routing. **Monitoring & Alerting** overlays metrics (success rates, failure rates, execution times) to detect operational issues. Lastly, **Audit & Compliance Logs** record who triggered what, what executed, and what external systems were touched—critical for regulated industries. This stack represents the operational “meta-system” surrounding the core execution engine, ensuring that automations are not just functional, but also governable and trustworthy.
 
 ### 6.4 Job Lifecycle State Machine
@@ -450,7 +438,7 @@ stateDiagram-v2
     Cancelled --> [*]
 ```
 
-**Diagram explanation (≈170 words)**
+
 This state machine captures the lifecycle of an individual job in GitHub Actions. Initially, a job is in the **Pending** state; it has been defined but is not yet ready to run because dependencies might not be satisfied. Once all `needs` dependencies are complete, the job transitions to **Queued**, waiting for a suitable runner. When a runner is assigned and begins executing, the job moves to **Running**. If all steps complete successfully, it transitions to **Succeeded`. If a step fails (and` continue-on-error `is not instructing otherwise), the job moves to **Failed`. A job may also be **Cancelled** by user intervention or system timeouts. Each terminal state leads back to the final `[ * ]` node. This finite-state model ensures deterministic job status behavior, essential for reliable build and deployment pipeline orchestration.
 
 ### 6.5 Step Execution Flow
@@ -469,7 +457,7 @@ flowchart TD
     H -->|No| J[Handle Failure Policy]
 ```
 
-**Diagram explanation (≈180 words)**
+
 This diagram focuses on the lifecycle of a single step within a job. **Start Step** kicks off the step execution. First, the runner **Prepares Environment**, loading environment variables, secrets, and any necessary context. Then it **Resolves `uses`/`run`**, determining whether the step uses an action or runs an inline shell command. The decision node **Step Type?** routes to **Fetch & Run Action** for `uses` or **Run Shell Command** for `run`. After executing, the system **Captures Exit Code & Logs**. Next, a decision node **Success?** evaluates the exit code and relevant settings like `continue-on-error`. If successful, control passes to **Proceed to Next Step**. If the step fails, the engine **Handles Failure Policy**, which might mark the job as failed or continue with subsequent steps, depending on configuration. Understanding this micro-lifecycle is key to debugging complex composite workflows, especially when incorporating many third-party actions.
 
 ---
@@ -528,7 +516,7 @@ flowchart TD
     G --> I[Composition via Steps/Jobs]
 ```
 
-**Diagram explanation (≈170 words)**
+
 This diagram shows how GitHub Actions’ architecture aligns with multiple design principle categories. **HLD Principles** produce **Modular Orchestration Layers** and **DAG-Based Execution**, emphasizing structural decomposition and deterministic flows. **LLD Principles** drive **Reusable Actions** (encapsulated logic units) and **Explicit Job Specs** (detailed configuration approximating method-level logic). **OOP Principles** result in **Encapsulation via Actions**—actions hiding implementation details behind inputs/outputs—and **Composition via Steps/Jobs**, which favor building behavior by combining entities instead of relying on rigid inheritance. The diagram emphasizes that while workflows appear declarative in YAML, their underlying implementation is deeply influenced by classical software engineering best practices, making GitHub Actions not just a stopgap CI tool but a well-architected automation platform.
 
 ### 7.6 Composite and OO Integration Diagram
@@ -559,7 +547,7 @@ classDiagram
     JobNode "1" --> "many" StepNode
 ```
 
-**Diagram explanation (≈160 words)**
+
 This diagram offers an OO-flavored view of how a hypothetical internal implementation of GitHub Actions might look. A **WorkflowEngine** class parses workflow definitions, builds the job graph, and schedules jobs. Each **JobNode** represents a concrete job with identifiers, dependencies, and steps; it has an `execute()` method that runs the job on a runner. Each **StepNode** encapsulates the step configuration, whether it is a `uses` or `run` type, and the logic to `execute()` itself. The relationships between these classes clearly follow the Composite pattern: the engine manipulates a tree/graph composed of job nodes, each of which further contains step nodes. This model also demonstrates classical OO design: clear responsibilities, compositional structures, and method-based behavior invocation.
 
 ---
@@ -613,7 +601,7 @@ flowchart LR
     O2 --> RP2
 ```
 
-**Diagram explanation (≈170 words)**
+
 This diagram illustrates a high-level scalable design where orchestrators and runner pools are deployed across multiple regions. **Region A Orchestrator** and **Region B Orchestrator** independently handle workflows linked to their respective data sets or customers, while **Runner Pool Region A** and **Runner Pool Region B** execute the workload. This partitioned architecture permits horizontal scaling: adding more orchestrators or runner pools in each region increases capacity. It also supports data locality and compliance: workflows and their logs can remain within specified geographic boundaries. While the internal implementation details are proprietary, this pattern is consistent with modern SaaS design for high-volume CI/CD systems.
 
 ### 8.5 Maintainability Diagram
@@ -627,7 +615,6 @@ flowchart TD
     E --> F[Standardized Automation Library]
 ```
 
-**Diagram explanation (≈170 words)**
 This diagram shows the maintainability lifecycle of workflows. **Workflow YAML in Repo** is treated like any other code: subject to **Code Review**. Once merged, it contributes to a **Versioned History** where changes are traceable. From this history, teams can **Revert / Rollback** problematic workflow modifications. Over time, duplicated logic can be **Refactored into Composite Actions**, which are stored in dedicated repositories (or directories) and reused across projects, forming a **Standardized Automation Library**. This flow is central to keeping CI/CD logic manageable even as organizations scale across hundreds of services and teams.
 
 ### 8.6 Operability Diagram
@@ -641,7 +628,6 @@ flowchart TD
     E --> F[Capacity Planning]
 ```
 
-**Diagram explanation (≈180 words)**
 This diagram outlines operational practices supporting GitHub Actions as a service. **Execution Metrics** (e.g., job queue times, runner utilization, error rates) feed into **Monitoring Dashboards**, which provide real-time visibility for operators and SREs. These metrics also drive **Alert Rules**, which automatically trigger **Oncall Notifications** when thresholds are violated. Meanwhile, the dashboards enable **Trend Analysis**: identifying patterns such as peak times, recurrent failures, or inefficient workflows. This analysis informs **Capacity Planning**, where infrastructure teams decide how many runners to provision, which regions to scale, and how to route workload. This feedback loop is crucial to operating such a large-scale multi-tenant service reliably and cost-effectively.
 
 ### 8.7 Composite Build System Perspective on Scalability
