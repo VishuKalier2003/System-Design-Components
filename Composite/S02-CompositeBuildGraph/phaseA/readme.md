@@ -475,7 +475,7 @@ sequenceDiagram
 flowchart LR
     A[Node Configuration] --> B[ResourceRegistry]
     B --> C[Assigned Resource]
-    C --> D[Action.fetchTopResource()]
+    C --> D[Action.fetchTopResource]
     D --> E[Execution Function]
     E --> F[ExecutionOutput]
 ```
@@ -488,7 +488,7 @@ This shows that resource constraints are not external—they are a first-class p
 
 ```mermaid
 flowchart TD
-    A[activateGraph()] --> B[Traverse All Nodes]
+    A[activateGraph] --> B[Traverse All Nodes]
     B --> C[Load Configuration]
     C --> D[Assign Resources]
     D --> E[Prepared Nodes Ready for Execution]
