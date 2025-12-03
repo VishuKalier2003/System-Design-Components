@@ -6,10 +6,10 @@ This README provides a production-grade, enterprise-ready explanation of the **C
 
 ## **Component Index**
 
-| Component Name              | Folder Link                                     |
-| --------------------------- | ----------------------------------------------- |
-| Composite Base Abstraction  | `/src/main/java/.../model/Composite`            |
-
+| Component Name                     | Folder Link                                     |
+| ---------------------------------- | ----------------------------------------------- |
+| Virtual File System                | [VFS](https://github.com/VishuKalier2003/System-Design-Components/tree/main/Composite/S01-VirtualFileSystem)            |
+| Composite Build Graph              | [Composite-graph](https://github.com/VishuKalier2003/System-Design-Components/tree/main/Composite/S02-CompositeBuildGraph) |
 
 ---
 
@@ -342,4 +342,5 @@ Its natural synergy with real-world enterprise systems—CI/CD engines, deployme
 For large-scale execution systems, combining Composite with resource-aware execution, activation stages, and pluggable behaviors results in a powerful, production-ready platform capable of supporting high throughput, reproducible automation, and deterministic execution pipelines.
 
 ---
+
 
