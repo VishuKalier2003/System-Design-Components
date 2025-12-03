@@ -9,6 +9,7 @@ This README provides a structured, enterprise-grade explanation of the **Observe
 | Component Name             | Folder Link                                 |
 | -------------------------- | ------------------------------------------- |
 | Event Sourced Notification Bus | [EventBus](https://github.com/VishuKalier2003/System-Design-Components/tree/main/Observer/S-01EventSourcedNotificationHub) |
+| Case Studies |    |
 
 ---
 
@@ -196,10 +197,10 @@ This structure isolates contract definitions, implementations, and demonstration
 
 ```mermaid
 flowchart TD
-    A[State Changes in Subject] --> B[Subject Calls notify()]
-    B --> C1[Observer 1 update()]
-    B --> C2[Observer 2 update()]
-    B --> C3[Observer 3 update()]
+    A[State Changes in Subject] --> B[Subject Calls notify]
+    B --> C1[Observer 1 update]
+    B --> C2[Observer 2 update]
+    B --> C3[Observer 3 update]
     C1 --> D[Observer Processes Data]
     C2 --> D
     C3 --> D
@@ -257,3 +258,4 @@ Modern reactive systems build upon Observer semantics.
 # **Summary**
 
 The Observer Pattern provides a clean, scalable, and decoupled mechanism for state-driven notifications between components. It embodies core principles of modular software design and is deeply embedded in real-world systems ranging from GUIs to distributed architectures. By structuring logic around subjects and observers, applications achieve event-driven behavior, extensibility, and maintainability with minimal coupling. This README outlines the conceptual, structural, and practical facets of the pattern supported with diagrams and structured documentation suitable for enterprise engineering environments.
+
