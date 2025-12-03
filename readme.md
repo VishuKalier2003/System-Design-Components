@@ -18,7 +18,9 @@ incrementally, intentionally, and with clarity of design.
 
 | Design Pattern                    | Description                                                                                             | Example Components                         | Link                                      |
 | --------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------ | ----------------------------------------- |
-| **Chain of Responsibility (CoR)** | Sequential processing across decoupled handlers; ideal for pipelines, validations, and transformations. | Reactive Compliance Pipeline (Phase A → C) | 👉 [Go to CoR](./ChainOfResponsibility) |
+| **Chain of Responsibility (CoR)** | Sequential processing across decoupled handlers; ideal for pipelines, validations, and transformations. | Reactive Compliance Pipeline, etc. | [Go to CoR](./ChainOfResponsibility) |
+| **Composite** | Tree, acyclic graph structure; parent-child relationship management; ideal for propogation and worflow orchestration | Composite Build System, Virtual File System, etc. | [Go to Composite](https://github.com/VishuKalier2003/System-Design-Components/tree/main/Composite) |
+| **Observer** | publish subscriber model; dynamic graph relationships; ideal for many to many relationship management | Event Sourced Notification System, etc. | [Go to Observer](https://github.com/VishuKalier2003/System-Design-Components/tree/main/Observer) |
 
 This table acts as the structural anchor for the entire repository. Each row leads you into a curated design universe.
 
