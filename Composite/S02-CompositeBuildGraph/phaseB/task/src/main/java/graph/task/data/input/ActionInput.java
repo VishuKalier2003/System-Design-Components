@@ -1,6 +1,5 @@
 package graph.task.data.input;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -16,7 +15,7 @@ public class ActionInput {
     private final AtomicInteger index = new AtomicInteger(0);
     private boolean retryFlag;
     private int retryCount;
-    private final List<String> actions = new ArrayList<>();
+    private List<String> actions;
     private final String reqID;
 
     public void addResourceRequest(String req) {this.actions.add(req);}

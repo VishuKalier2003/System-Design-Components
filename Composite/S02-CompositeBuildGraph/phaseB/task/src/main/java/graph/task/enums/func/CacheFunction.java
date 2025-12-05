@@ -11,6 +11,7 @@ import graph.task.enums.ActionStatus;
 import graph.task.model.modules.Executable;
 import graph.task.service.Cache;
 
+// technique: enum + pluggable strategy where each enum stores a pluggable overridden function of an interface for dynamic use
 public enum CacheFunction implements Executable {
     LRU_CACHE {
         @Override

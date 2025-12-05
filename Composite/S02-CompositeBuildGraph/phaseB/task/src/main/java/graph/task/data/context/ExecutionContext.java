@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+// detail: ExecutionContext created separately to not mingle data with resources
 @Getter
 @Setter
 @Builder(toBuilder=true)
@@ -18,5 +19,6 @@ public class ExecutionContext {
     private Cache cache;
     private Retry retry;
     private Map<ResourceRequest, Supplier<Object>> resourceProvider;
-    private final AtomicInteger index;      // If not -1, needs to update the actionInput index
+    @Builder.Default
+    private final AtomicInteger index = new AtomicInteger(0);
 }

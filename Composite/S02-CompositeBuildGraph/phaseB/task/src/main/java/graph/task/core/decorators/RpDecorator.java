@@ -18,6 +18,7 @@ import lombok.Setter;
 public class RpDecorator implements Decorate {
     @Autowired @Qualifier("resource_provider") private Map<ResourceRequest, Supplier<Object>> provider;
 
+    // technique: toBuilder() to dynamically update the properties after creation, no need to create objects every time
     @Override public ExecutionContext enrich(ExecutionContext ctx) {
         return ctx.toBuilder().resourceProvider(provider).build();
     }

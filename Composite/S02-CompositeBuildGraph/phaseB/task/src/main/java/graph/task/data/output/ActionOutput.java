@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Builder
+@Builder(toBuilder=true)
 public class ActionOutput {
     private ActionStatus actionStatus;
     private List<String> logs;

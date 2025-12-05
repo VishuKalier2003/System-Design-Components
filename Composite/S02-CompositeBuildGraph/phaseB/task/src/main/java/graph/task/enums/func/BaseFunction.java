@@ -13,10 +13,12 @@ import graph.task.enums.ActionStatus;
 import graph.task.enums.ResourceRequest;
 import graph.task.model.modules.Executable;
 
+// technique: enum + pluggable strategy where each enum stores a pluggable overridden function of an interface for dynamic use
 public enum BaseFunction implements Executable {
 
+    // An enum
     BASE_METAL_PURE {
-        @Override
+        @Override       // detail: The function itself fires a BiFunction, hence pluggable at run-time
         public BiFunction<ActionInput, ExecutionContext, ActionOutput> swappableFunction() {
             return (action, context) -> {
                 List<String> logs = new ArrayList<>();
@@ -31,10 +33,10 @@ public enum BaseFunction implements Executable {
                                 logs.add("QUOTA of value "+(int)(data.get())+" added to "+action.getReqID());
                             }
                             case TOKEN -> {
-                                logs.add("TOKEN "+(int)(data.get())+" provided to "+action.getReqID());
+                                logs.add("TOKEN "+(String)(data.get())+" provided to "+action.getReqID());
                             }
                             case FLAG -> {
-                                logs.add("FLAG value "+(int)(data.get())+" given to "+action.getReqID());
+                                logs.add("FLAG value "+(boolean)(data.get())+" given to "+action.getReqID());
                             }
                             default -> {
                                 logs.add("RESOURCE ASKED CANNOT BE GIVEN BY THE PROVIDER");

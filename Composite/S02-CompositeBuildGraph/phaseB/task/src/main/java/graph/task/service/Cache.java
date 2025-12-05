@@ -8,22 +8,17 @@ import org.springframework.stereotype.Service;
 
 import graph.task.data.output.ActionOutput;
 
+// detail: A small cache unit
 @Service
 public class Cache {
     // A small LRU Cache of definite size
     private final int maxSize = 5;
     private final ActionOutput[] cache = new ActionOutput[maxSize];
-    private final AtomicInteger index = new AtomicInteger(-1);
+    private final AtomicInteger index = new AtomicInteger(-1);      // Integer for atomic operations
     private final ConcurrentHashMap<String, Integer> mp = new ConcurrentHashMap<>();
     private final ReentrantLock lock = new ReentrantLock();
 
-    public synchronized boolean isFull() {
-        if(index.intValue() >= maxSize-1)
-            return true;
-        return cache[index.intValue()] != null && cache[index.intValue() + 1] == null;
-    }
-
-    public synchronized boolean update(String reqID, ActionOutput data) {
+    public boolean update(String reqID, ActionOutput data) {
         try {
             lock.lock();
             if(index.intValue() == maxSize-1) {
@@ -40,11 +35,11 @@ public class Cache {
         }
     }
 
-    public synchronized boolean contains(String reqID) {
+    public boolean contains(String reqID) {
         return mp.containsKey(reqID);
     }
 
-    public synchronized ActionOutput get(String reqID) {
+    public ActionOutput get(String reqID) {
         if(!mp.containsKey(reqID))
             return null;
         else {

@@ -3,9 +3,9 @@ package graph.task.core.nodes;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import graph.task.data.output.ActionOutput;
 import graph.task.model.Composite;
 
+// technique: Composite pattern - container nodes (non-leaf nodes)
 public class Container extends Composite {
 
     public Container(String name) {
@@ -18,7 +18,8 @@ public class Container extends Composite {
 
     @Override public boolean isLeaf() {return false;}
 
-    @Override public List<ActionOutput> mergeOutputs() {
-        return null;
+    @Override public boolean addDependency(Composite node) {
+        dependencies.add(node);     // adds the node as child
+        return true;
     }
 }

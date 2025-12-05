@@ -11,7 +11,7 @@ import lombok.Getter;
 @Getter
 @Component
 public class RetryDecorator implements Decorate {
-    @Autowired private Retry retry;
+    @Autowired private Retry retry;     // retry logic wired
 
     @Override public ExecutionContext enrich(ExecutionContext ctx) {
         return ctx.toBuilder().retry(retry).build();

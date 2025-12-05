@@ -8,6 +8,7 @@ import graph.task.model.Decorate;
 import graph.task.service.Cache;
 import lombok.Getter;
 
+// Created as a singleton component since it does not store data rather behaves as a supplier
 @Getter
 @Component
 public class CacheDecorator implements Decorate {

@@ -16,10 +16,12 @@ import graph.task.model.modules.Executable;
 import lombok.Getter;
 import lombok.Setter;
 
+// technique: separate layer pluggable Engine - stores the operations of Engine and never the data
 @Setter
 @Getter
 @Component
 public class ExecutionEngine implements Action {
+    // pluggable interface at run-time
     private Executable engineFunction;
     private final ReentrantLock lock = new ReentrantLock();
 
@@ -28,6 +30,7 @@ public class ExecutionEngine implements Action {
     }
 
     @Override public ActionOutput execute(ActionInput inp, ExecutionContext ec) {
+        // locking for synchronization
         try {
             lock.lock();
             return engineFunction.swappableFunction().apply(inp, ec);

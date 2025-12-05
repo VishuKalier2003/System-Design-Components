@@ -5,6 +5,6 @@ import graph.task.data.input.ActionInput;
 import graph.task.data.output.ActionOutput;
 
 // Used by Engine for layering the abstraction
-public interface Action {
+public interface Action {       // Functional Interface
     public ActionOutput execute(ActionInput inp, ExecutionContext ec);
 }

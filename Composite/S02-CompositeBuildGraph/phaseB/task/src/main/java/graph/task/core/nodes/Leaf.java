@@ -3,9 +3,9 @@ package graph.task.core.nodes;
 import java.util.ArrayList;
 import java.util.List;
 
-import graph.task.data.output.ActionOutput;
 import graph.task.model.Composite;
 
+// technique: Composite pattern - (leaf nodes)
 public class Leaf extends Composite {
 
     public Leaf(String name) {
@@ -18,7 +18,6 @@ public class Leaf extends Composite {
 
     @Override public boolean isLeaf() {return true;}
 
-    @Override public List<ActionOutput> mergeOutputs() {
-        return null;
-    }
+    // cannot add dependency to a leaf, hence returns `false`
+    @Override public boolean addDependency(Composite node) {return false;}
 }
