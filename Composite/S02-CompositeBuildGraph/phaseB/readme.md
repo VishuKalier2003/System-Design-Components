@@ -24,7 +24,7 @@ This architecture forms the basis of an extensible, enterprise-grade task-orches
 
 ---
 
-## **Pt 2. Folder Structure with Explanation**
+## **Folder Structure with Explanation**
 
 ```
 /graph
@@ -143,7 +143,7 @@ The system built is **much closer to a dynamic execution kernel than a mere task
 
 ---
 
-### **2. Core Component Blocks & Responsibilities**
+### **Core Component Blocks & Responsibilities**
 
 |Layer|Modules|Responsibility|
 |---|---|---|
@@ -188,7 +188,7 @@ This flow guarantees:
 
 ---
 
-### **4. Architecture**
+### **Architecture**
 
 ```mermaid
 flowchart TD
@@ -246,7 +246,7 @@ graph LR
 
 ---
 
-### **6. Architecture Walkthrough — 1000+ word explanatory narrative**
+### **Architecture Walkthrough**
 
 The **ExecutionManager** acts as the primary entrypoint, receiving a `Rule` that defines a workflow.
 This rule contains:
