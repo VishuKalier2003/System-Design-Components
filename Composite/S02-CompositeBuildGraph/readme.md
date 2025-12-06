@@ -22,7 +22,15 @@ The component is engineered with three architectural pillars:
 3. **Graph-based Dependency Traversal**
    Builds execute in structured, BFS/DAG traversal order, validating cycles and dependencies.
 
-The engine resembles lightweight versions of build systems such as Maven, Gradle, Buck, and Bazel, while remaining domain-neutral enough to orchestrate any execution pipeline.
+The engine resembles lightweight versions of build systems such as Maven, Gradle, Buck, and Bazel, while remaining domain-neutral enough to orchestrate any execution pipeline. Below is the table for quick architectural breakdown.
+
+| S. No. | Topic | Link |
+|--------|------------------------------------------------------------|----------------------|
+|   1.   | Case Study - GitHub Actions                                | [Documentation](https://github.com/VishuKalier2003/System-Design-Components/blob/main/Composite/S02-CompositeBuildGraph/case-studies/GitHub-Actions.md) |
+|   2.   | Case Study - Apache Maven and Gradle                       | [Documentation](https://github.com/VishuKalier2003/System-Design-Components/blob/main/Composite/S02-CompositeBuildGraph/case-studies/Maven-Gradle.md) |
+|   p1.  | First phase implementation of Composite Build System       | [Implementation](https://github.com/VishuKalier2003/System-Design-Components/tree/main/Composite/S02-CompositeBuildGraph/phaseA) |
+|   p2.  | Second phase implementation of Composite Build System      | [Implementation](https://github.com/VishuKalier2003/System-Design-Components/tree/main/Composite/S02-CompositeBuildGraph/phaseB) |
+
 
 ---
 
@@ -279,3 +287,4 @@ This architecture can be extended in future phases to include:
 * Distributed runner architecture
 
 The foundation aligns strongly with real-world orchestration platforms and can evolve into a highly capable build or automation system.
+
