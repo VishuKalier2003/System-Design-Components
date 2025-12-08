@@ -1,4 +1,4 @@
-# **Composite Build System — Technical README**
+# **Composite Build System**
 
 *A modular, graph-driven execution engine built using the Composite design pattern*
 
@@ -28,6 +28,7 @@ The engine resembles lightweight versions of build systems such as Maven, Gradle
 |--------|------------------------------------------------------------|----------------------|
 |   1.   | Case Study - GitHub Actions                                | [Documentation](https://github.com/VishuKalier2003/System-Design-Components/blob/main/Composite/S02-CompositeBuildGraph/case-studies/GitHub-Actions.md) |
 |   2.   | Case Study - Apache Maven and Gradle                       | [Documentation](https://github.com/VishuKalier2003/System-Design-Components/blob/main/Composite/S02-CompositeBuildGraph/case-studies/Maven-Gradle.md) |
+|   3.   | Case Study - Netflix Deployment Pipelines                  | [Documentation](https://github.com/VishuKalier2003/System-Design-Components/blob/main/Composite/S02-CompositeBuildGraph/case-studies/Netflix-Pipeline.md) |
 |   p1.  | First phase implementation of Composite Build System       | [Implementation](https://github.com/VishuKalier2003/System-Design-Components/tree/main/Composite/S02-CompositeBuildGraph/phaseA) |
 |   p2.  | Second phase implementation of Composite Build System      | [Implementation](https://github.com/VishuKalier2003/System-Design-Components/tree/main/Composite/S02-CompositeBuildGraph/phaseB) |
 
@@ -287,4 +288,5 @@ This architecture can be extended in future phases to include:
 * Distributed runner architecture
 
 The foundation aligns strongly with real-world orchestration platforms and can evolve into a highly capable build or automation system.
+
 
