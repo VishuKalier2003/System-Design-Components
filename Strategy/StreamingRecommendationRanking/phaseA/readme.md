@@ -1,5 +1,5 @@
 
-# **Composite Build System**
+# **Streaming Recommendation Strategy Engine**
 
 A Composite Build System, in context of this implementation, represents an **enterprise-grade orchestration mechanism** that layers _strategy-based ranking_, _chain-of-responsibility execution_, _handler-driven extensibility_ and _multi-rail output scoring_ into a modular engine capable of evolving without architectural rewrite. Unlike a traditional recommender that runs a fixed pipeline, this component supports **dynamic strategy switching**, **runtime handler mutation**, **custom overrides**, **two-layer decisioning** and **score-weighted competitive ranking**, thereby functioning as a scalable intelligence core for streaming platforms.
 
