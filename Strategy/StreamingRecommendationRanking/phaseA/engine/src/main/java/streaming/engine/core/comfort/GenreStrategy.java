@@ -30,7 +30,7 @@ public class GenreStrategy {
             }
         return database.getAllAnime()
             .stream().filter(x -> x.getGenre().contains(max[0]))
-            .map(x -> new Output(x, railType))
+            .map(x -> new Output(x, railType, x.getRating()))
             .toList();
     };
 
@@ -53,13 +53,13 @@ public class GenreStrategy {
         }
         return database.getAllAnime().stream()
             .filter(x -> x.getGenre().contains(maxMin[0]) || x.getGenre().contains(maxMin[1]))
-            .map(x -> new Output(x, railType))
+            .map(x -> new Output(x, railType, x.getRating()))
             .toList();
     };
 
     public final Strategy LAST_WATCHED = () -> (animeList, railType) -> {
         Genre last = animeList.getGenres().get(animeList.getGenres().size() - 1);
-        return database.getAllAnime().stream().filter(x -> x.getGenre().contains(last)).map(x -> new Output(x, railType))
+        return database.getAllAnime().stream().filter(x -> x.getGenre().contains(last)).map(x -> new Output(x, railType, x.getRating()))
         .toList();
     };
 }

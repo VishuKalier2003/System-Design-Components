@@ -20,7 +20,7 @@ public class RandomStrategy {
     public final Strategy RANDOM = () -> (animeList, railType) -> {
         int rand = ThreadLocalRandom.current().nextInt(0, genreGraph.total());
         Genre genre = genreGraph.getFromIndex(rand);
-        return db.getAllAnime().stream().filter(x -> x.getGenre().contains(genre)).map(x -> new Output(x, railType)).toList();
+        return db.getAllAnime().stream().filter(x -> x.getGenre().contains(genre)).map(x -> new Output(x, railType, x.getRating())).toList();
     };
 
     public final Strategy RANDOM_NEIGHBOR = () -> (animeList, railType) -> {
@@ -31,6 +31,6 @@ public class RandomStrategy {
                 if(genre.contains(g))
                     return true;
             return false;
-        }).map(x -> new Output(x, railType)).toList();
+        }).map(x -> new Output(x, railType, x.getRating())).toList();
     };
 }

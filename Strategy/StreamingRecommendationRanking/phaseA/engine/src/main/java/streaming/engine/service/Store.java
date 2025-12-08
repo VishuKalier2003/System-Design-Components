@@ -11,6 +11,7 @@ import streaming.engine.data.User;
 import streaming.engine.data.input.Request;
 import streaming.engine.database.Database;
 
+// detail: The store will absorb the string inputs and convert to the necessary data type
 @Service
 public class Store {
     private final Map<String, Request> store = new HashMap<>();

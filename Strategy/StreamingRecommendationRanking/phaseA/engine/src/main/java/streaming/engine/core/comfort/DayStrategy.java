@@ -30,7 +30,7 @@ public class DayStrategy {
             }
         return database.getAllAnime().stream()
             .filter(x -> x.getDays().contains(day[0]))
-            .map(x -> new Output(x, railType)).toList();
+            .map(x -> new Output(x, railType, x.getRating())).toList();
     };
 
     public final Strategy ALL_DAYS = () -> (animeList, railType) -> {
@@ -42,6 +42,6 @@ public class DayStrategy {
                         return true;
                 return false;
             })
-            .map(x -> new Output(x, railType)).toList();
+            .map(x -> new Output(x, railType, x.getRating())).toList();
     };
 }

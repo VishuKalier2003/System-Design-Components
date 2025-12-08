@@ -30,7 +30,7 @@ public class ActivityStrategy {
                 if(adjacentGenre.contains(g))
                     return true;
             return false;
-        }).map(x -> new Output(x, railType)).toList();
+        }).map(x -> new Output(x, railType, x.getRating())).toList();
     };
 
     public final Strategy ACTIVITY_LOW = () -> // first strategy
@@ -44,6 +44,6 @@ public class ActivityStrategy {
                 if(adjacentGenre.contains(g))
                     return true;
             return false;
-        }).map(x -> new Output(x, railType)).toList();
+        }).map(x -> new Output(x, railType, x.getRating())).toList();
     };
 }
