@@ -89,7 +89,12 @@ public class ChainManager {
             int k = 5;
             while(!maxHeap.isEmpty() && k > 0) {
                 Output output = maxHeap.poll();
-                output.setScore(output.getAnime().getRating() / (k+0.0d));
+                double weight = switch(output.getRailType()) {
+                    case COMFORT -> 1.0;
+                    case DISCOVERED -> 1.3;
+                    case EXPERIMENT -> 1.5;
+                };
+                output.setScore(output.getAnime().getRating() * weight / (k+1.0));
                 outputs.add(output);
                 k--;
             }
