@@ -58,7 +58,7 @@ public class CompletionHandler implements Handler {
             }
             Output.Pair p = output.new Pair(HANDLER, TransactionStatus.PASS);
             output.getActions().add(p);
-            output.getLogs().add("Sender Bank currently freezed due to transaction processing");
+            output.getLogs().add("Transaction completed...");
             return output;
         }, executor).exceptionally(fn -> {
             Throwable cause = fn.getCause();
@@ -66,7 +66,7 @@ public class CompletionHandler implements Handler {
                 output.setFailed(true);
                 Output.Pair p = output.new Pair(HANDLER, TransactionStatus.FAIL);
                 output.getActions().add(p);
-                output.getLogs().add("Idempotency Error: Lock Cache is getting idempotency");
+                output.getLogs().add("Transaction failed at last step...");
             }
             return output;
         });

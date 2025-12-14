@@ -46,17 +46,17 @@ public class ReceiverMoneyHandler implements Handler {
             Resource resource = pool.get(ResourceRequest.DATABASE);
             if (resource instanceof Database db) {
                 Input inp = output.getInput();
-                String hash = inp.getTransferFrom().getUsername() + "-" + inp.getTransferFrom().getBank();
+                String hash = inp.getTransferTo().getUsername() + "-" + inp.getTransferTo().getBank();
                 int amt = db.getCurrentAmount(hash);
                 if(amt < inp.getAmount()) {
-                    throw new FundsException(inp.getTransferFrom().getUsername(), inp.getAmount());
+                    throw new FundsException(inp.getTransferTo().getUsername(), inp.getAmount());
                 }
                 // Receiver receives money
                 db.setAmount(hash, +inp.getAmount());
             }
             Output.Pair p = output.new Pair(HANDLER, TransactionStatus.PASS);
             output.getActions().add(p);
-            output.getLogs().add("Sender sends the money successfully");
+            output.getLogs().add("Receiver receives the money successfully");
             return output;
         }, executor).exceptionally(fn -> {
             Throwable cause = fn.getCause();

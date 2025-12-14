@@ -13,7 +13,6 @@ import transactions.compensating.data.output.Output;
 import transactions.compensating.enums.Handlers;
 import transactions.compensating.enums.ResourceRequest;
 import transactions.compensating.enums.TransactionStatus;
-import transactions.compensating.model.AbstractQueue;
 import transactions.compensating.model.Compensator;
 import transactions.compensating.model.Resource;
 import transactions.compensating.service.LockCache;
@@ -21,7 +20,7 @@ import transactions.compensating.service.LockCache;
 @Setter
 @Component
 // technique: synchronous compensators
-public class ReceiverLockCompensator extends AbstractQueue implements Compensator {
+public class ReceiverLockCompensator implements Compensator {
     @Autowired @Qualifier("pool") private Map<ResourceRequest, Resource> pool;
 
     private static final Handlers HANDLER = Handlers.RECEIVER_LOCK_COMPENSATOR;

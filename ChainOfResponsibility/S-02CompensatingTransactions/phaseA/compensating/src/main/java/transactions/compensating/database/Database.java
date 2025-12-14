@@ -35,11 +35,21 @@ public class Database implements Resource {
 
     public synchronized int getCurrentAmount(String key) {return balance.get(key);}
 
+    public synchronized int getCurrentAmount(User user) {
+        String hash = user.getUsername() + "-" + user.getBank();
+        return getCurrentAmount(hash);
+    }
+
     // assuming, the banker detail exist, else NPE
     public synchronized void setAmount(String key, int add) {balance.put(key, balance.get(key) + add);}
 
     public synchronized boolean contains(User user) {
         return db.get(user.getBank()).contains(user.getUsername());
+    }
+
+    public void show(User user) {
+        String key = user.getUsername() + "-" + user.getBank();
+        System.out.println("Account : "+key+" amount : "+getCurrentAmount(key));
     }
 
     @Override

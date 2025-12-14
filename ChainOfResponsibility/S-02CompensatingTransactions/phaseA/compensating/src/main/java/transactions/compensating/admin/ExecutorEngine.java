@@ -69,6 +69,19 @@ public class ExecutorEngine {
             }
             current = current.next();
         }
+        if (output.isFailed()) {
+        while (!stack.isEmpty()) {
+            try {
+                Compensator compensator = stack.pollLast(); // LIFO
+                output = compensator.atomicCompensation(output).get();
+            } catch (InterruptedException ex) {
+                output.getLogs().add(
+                    "Compensation failure: " + ex.getMessage()
+                );
+                // intentionally NOT failing the rollback chain
+            }
+        }
+    }
         return output;
     }
 

@@ -51,6 +51,9 @@ public class CheckHandler implements Handler {
                 else if (!db.contains(inp.getTransferFrom()))
                     throw new NotInDatabaseException(inp.getTransferFrom().getUsername(), "SENDER");
             }
+            Output.Pair p = output.new Pair(HANDLER, TransactionStatus.PASS);
+            output.getActions().add(p);
+            output.getLogs().add("Database check successful");
             return output;
         }, executor).exceptionally(fn -> {
             Throwable cause = fn.getCause();

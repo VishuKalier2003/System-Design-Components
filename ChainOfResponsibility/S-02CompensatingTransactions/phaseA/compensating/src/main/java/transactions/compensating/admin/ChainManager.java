@@ -28,12 +28,12 @@ public class ChainManager {
     @PostConstruct
     public void init() {
         head = h1;
-        h1.next(h2);
-        h2.next(h3);
+        h1.next(h3);
         h3.next(h4);
         h4.next(h5);
         h5.next(h6);
-        h6.next(h7);
+        h6.next(h2);
+        h2.next(h7);
     }
 
     public void setHandlers(Handler ha, Handler hb) {

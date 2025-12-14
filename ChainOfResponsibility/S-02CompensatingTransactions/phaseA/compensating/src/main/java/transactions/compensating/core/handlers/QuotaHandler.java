@@ -59,7 +59,6 @@ public class QuotaHandler implements Handler {
             }
             Output.Pair p = output.new Pair(HANDLER, TransactionStatus.PASS);
             output.getActions().add(p);
-            output.getLogs().add("Sender Bank currently freezed due to transaction processing");
             return output;
         }, executor).exceptionally(fn -> {
             Throwable cause = fn.getCause();

@@ -14,14 +14,13 @@ import transactions.compensating.database.Database;
 import transactions.compensating.enums.Handlers;
 import transactions.compensating.enums.ResourceRequest;
 import transactions.compensating.enums.TransactionStatus;
-import transactions.compensating.model.AbstractQueue;
 import transactions.compensating.model.Compensator;
 import transactions.compensating.model.Resource;
 
 @Setter
 @Component
 // technique: synchronous compensators
-public class ReceiverMoneyCompensator extends AbstractQueue implements Compensator {
+public class ReceiverMoneyCompensator implements Compensator {
     @Autowired @Qualifier("pool") private Map<ResourceRequest, Resource> pool;
 
     private static final Handlers HANDLER = Handlers.RECEIVER_MONEY_COMPENSATOR;

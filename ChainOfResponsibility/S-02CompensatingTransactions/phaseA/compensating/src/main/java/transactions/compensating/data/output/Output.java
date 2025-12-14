@@ -37,4 +37,13 @@ public class Output { // use builder to create objects
     public void incrementRetry() {
         this.retry++;
     }
+
+    public void show() {
+        int size = actions.size();
+        System.out.println("Transaction ID : "+transactionID);
+        System.out.println("Failed ? "+failed);
+        System.out.println("Retries : "+retry);
+        for(int i = 0; i < size; i++)
+            System.out.println("Handler ID : "+actions.get(i).handlerID+" Status : "+actions.get(i).status+" Log : "+logs.get(i));
+    }
 }
