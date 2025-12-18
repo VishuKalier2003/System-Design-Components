@@ -28,9 +28,10 @@ Each stage is isolated, composable, and policy-aware, enabling partial reuse, dy
 
 | Resource Technique  |    Description                           |      Implementation           |     Synonymous Technology        |  Case Study           |
 |---------------------|------------------------------------------|-------------------------------|----------------------------------|-----------------------|
-| Trust Escalation    | Where the chain providing access to resources, not on basis of role like RBAC but by basis of constituents in requests |  [Implementation-I](https://github.com/VishuKalier2003/System-Design-Components/tree/main/ChainOfResponsibility/S-04EnterpriseAccessClearance/phaseA-Trust-Escalation) | Google BeyondCorp - security service of Google drive |  [Case-Study-I]() |
+| Trust Escalation    | Where the chain providing access to resources, not on basis of role like RBAC but by basis of constituents in requests |  [Springboot](https://github.com/VishuKalier2003/System-Design-Components/tree/main/ChainOfResponsibility/S-04EnterpriseAccessClearance/phaseA-Trust-Escalation) | Google BeyondCorp - security service of Google drive |  [Case-Study-I]() |
 
 This pipeline mirrors patterns used in **AWS IAM**, **Zero Trust systems**, and **enterprise access brokers**, serving as a practical foundation for secure system design exploration.
 
 ---
+
 
