@@ -2,7 +2,7 @@
 
 ### What it is
 
-**Enterprise Access Clearance – IAM + Verified Access** is a modular, policy-driven access control component designed to model how modern enterprises authorize access under both normal and exceptional conditions. The component represents a realistic fusion of Identity and Access Management (IAM) principles with verified, context-aware clearance workflows commonly found in hyperscale cloud providers and regulated enterprises.
+**Enterprise Access Clearance – IAM + Verified Access** is a modular, policy-driven access control component designed to model how modern enterprises authorize access under both normal and exceptional conditions. The component represents a realistic fusion of Identity and Access Management (IAM) principles with verified, context-aware clearance workflows commonly found in hyper scale cloud providers and regulated enterprises.
 
 At its core, the system enforces access decisions through an explicitly ordered **Chain of Responsibility**, where each handler asserts a single, well-defined responsibility. The chain is not static; it is composed dynamically based on access intent (NORMAL vs EMERGENCY), allowing different enforcement paths without contaminating handlers with conditional logic. This separation is fundamental to enterprise-grade governance, auditability, and extensibility.
 
